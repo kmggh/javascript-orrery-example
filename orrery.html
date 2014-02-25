@@ -1,0 +1,30 @@
+<!-- This is a javascript Orrery
+     Ken Guyton
+     Fri 2014-02-21 15:23:02 -0500
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Orrery</title>
+</head>
+
+<body>
+  <h1>Solar System Orrery</h1>
+
+  <script src="orrery.js">
+  </script>
+
+  <p>
+  Step size in yr (can be a fraction 1.25):
+  <input id="step" value="0.25" /><br>
+
+  Number of steps: <input id="count" value="7" /><br>
+  <button onClick="runOrrery()">Run</button><br>
+  </p>
+
+  <div id="orr" style="font-family: Courier; color: brown">
+      This is a solar system orrery.
+  </div>
+</body>
+</html> 
