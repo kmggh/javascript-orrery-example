@@ -29,4 +29,20 @@ well as, in this case, their relative distances.
 To Run
 ------
 
+### From the browser
+
 Open the orrery.html file in a browser.
+
+
+### From the command line
+
+    node run-console-orrery.js
+
+
+### To run tests
+
+To run tests, install jest with *npm* and then run the test.
+
+
+    npm install jest-cli --save-dev
+    npm test
