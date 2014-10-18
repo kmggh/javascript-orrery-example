@@ -10,7 +10,7 @@ describe('Planet period', function() {
 });
 
 describe('Planet step', function() {
-  it('Jupiter with orbital radius 5.0 and step 1.0 has pos 8.5.', function() {
+  it('Jupiter with orbital radius 5.0 and step 1.0 has pos 32.20.', function() {
     var orreryjs = require('../orrery');
     var aPlanet = new orreryjs.Planet('Jupiter', 5.0, 0.0);
     aPlanet.step(1.0)
