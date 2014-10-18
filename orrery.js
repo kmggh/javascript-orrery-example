@@ -1,6 +1,6 @@
 // An orrery in Javascript.
-// Ken Guyton
 // Fri 2014-02-21 15:23:02 -0500
+// Copyright (C) 2014 by Ken Guyton.  All Rights Reserved.
 
 /**
  * A planet object with a name, orbital radius in astronomical units
@@ -43,11 +43,7 @@ Planet.prototype.period = function () {
 Planet.prototype.step = function (deltaTime) {
   'use strict';
   this.posAngle += (360.0 / this.period() * deltaTime);
-
-  // Normalize the angle.
-  while (this.posAngle >= 360.0) {
-    this.posAngle -= 360.0;
-  }
+  this.posAngle = this.posAngle % 360.0;
 };
 
 /**
@@ -56,6 +52,7 @@ Planet.prototype.step = function (deltaTime) {
 function Orrery() {
   'use strict';
   this.planets = [];
+  this.total_time = 0.0;
 }
 
 /**
@@ -66,11 +63,13 @@ function Orrery() {
  */
 Orrery.prototype.step = function (deltaTime) {
   'use strict';
-  var planets_len = this.planets.length, i;
+  var planetsLen = this.planets.length, i;
 
-  for (i = 0; i < planets_len; i += 1) {
+  for (i = 0; i < planetsLen; i += 1) {
     this.planets[i].step(deltaTime);
   }
+
+  this.total_time += deltaTime;
 };
 
 /**
@@ -88,13 +87,14 @@ Orrery.prototype.addPlanet = function (planet) {
  */
 Orrery.prototype.toStr = function () {
   'use strict';
-  var out_str = '', i, planets_len = this.planets.length;
+  var outStr, i;
 
-  for (i = 0; i < planets_len; i += 1) {
-    out_str += this.planets[i].toStr() + '<br>\n';
+  outStr = '';
+  for (i = 0; i < this.planets.length; i += 1) {
+    outStr += this.planets[i].toStr() + '<br>\n';
   }
 
-  return out_str;
+  return outStr;
 };
 
 /**
@@ -105,32 +105,37 @@ Orrery.prototype.toStr = function () {
 function runOrrery() {
   'use strict';
 
-  var step_str, count_str, step, count, i, output_str, orrery,
-    MERCURY, EARTH, JUPITER, NEPTUNE;
+  var stepStr, countStr, step, count, i, outputStr, orrery,
+    mercury, earth, jupiter, neptune;
 
-  MERCURY = new Planet('Mercury', 0.39, 0.0);
-  EARTH = new Planet('Earth', 1.0, 0.0);
-  JUPITER = new Planet('Jupiter', 5.0, 0.0);
-  NEPTUNE = new Planet('Neptune', 30.1, 0.0);
+  mercury = new Planet('Mercury', 0.39, 0.0);
+  earth = new Planet('Earth', 1.0, 0.0);
+  jupiter = new Planet('Jupiter', 5.0, 0.0);
+  neptune = new Planet('Neptune', 30.1, 0.0);
 
-  step_str = document.getElementById("step").value;
-  count_str = document.getElementById("count").value;
+  stepStr = document.getElementById("step").value;
+  countStr = document.getElementById("count").value;
 
-  step = parseFloat(step_str);
-  count = parseInt(count_str, 10);
+  step = parseFloat(stepStr);
+  count = parseInt(countStr, 10);
 
-  output_str = '';
+  outputStr = '';
 
   orrery = new Orrery();
-  orrery.addPlanet(MERCURY);
-  orrery.addPlanet(EARTH);
-  orrery.addPlanet(JUPITER);
-  orrery.addPlanet(NEPTUNE);
+  orrery.addPlanet(mercury);
+  orrery.addPlanet(earth);
+  orrery.addPlanet(jupiter);
+  orrery.addPlanet(neptune);
 
   for (i = 0; i < count; i += 1) {
-    output_str += '<p>' + orrery.toStr() + '</p>';
+    output_str += '<p>Total time: ' + orrery.total_time.toFixed(2) +
+      '<br />';
+    output_str += orrery.toStr() + '</p>';
     orrery.step(step);
   }
 
-  document.getElementById("orr").innerHTML = output_str;
+  document.getElementById("orr").innerHTML = outputStr;
 }
+
+exports.Planet = Planet;
+exports.Orrery = Orrery;
